@@ -11,9 +11,9 @@ We have some exciting features in the pipeline! This post is still a draft and w
 
 ## Planned Features
 
-- **Comment System** â Integration with GitHub Discussions for post comments
-- **Newsletter** â Subscribe to get notified of new posts
-- **Analytics Dashboard** â Real-time visitor stats in the admin panel
-- **Multi-author Support** â Invite collaborators to write posts
+- **Comment System** Ã¢ÂÂ Integration with GitHub Discussions for post comments
+- **Newsletter** Ã¢ÂÂ Subscribe to get notified of new posts
+- **Analytics Dashboard** Ã¢ÂÂ Real-time visitor stats in the admin panel
+- **Multi-author Support** Ã¢ÂÂ Invite collaborators to write posts
 
 Stay tuned for more details!
