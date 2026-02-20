@@ -21,7 +21,7 @@ const CONFIG = {
     proxyUrl: 'https://blogpost-oauth.parasharsiddhant7.workers.dev',
 
     // Explicit callback URL (must match GitHub OAuth App settings exactly)
-    callbackUrl: 'https://sidd20228.github.io/blogpost/admin/callback.html',
+    callbackUrl: 'https://blog.hacker101.xyz/admin/callback.html',
 
     // OAuth scopes needed
     oauthScopes: 'repo workflow',

@@ -8,8 +8,8 @@ const { Feed } = require('feed');
 const SITE = {
   title: 'The Blog',
   description: 'A modern blog powered by GitHub Pages & Actions',
-  url: 'https://sidd20228.github.io/blogpost',
-  basePath: '/blogpost', // GitHub Pages subpath (set to '' for root domains)
+  url: 'https://blog.hacker101.xyz',
+  basePath: '', // Custom domain serves at root (no subpath)
   author: 'Admin',
   postsPerPage: 6,
 };
