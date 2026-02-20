@@ -8,7 +8,8 @@ const { Feed } = require('feed');
 const SITE = {
   title: 'The Blog',
   description: 'A modern blog powered by GitHub Pages & Actions',
-  url: '', // Set via env or leave blank for relative URLs
+  url: 'https://sidd20228.github.io/blogpost',
+  basePath: '/blogpost', // GitHub Pages subpath (set to '' for root domains)
   author: 'Admin',
   postsPerPage: 6,
 };
@@ -103,7 +104,7 @@ function render(template, vars) {
 
 // ─── Generate Tag Badges ─────────────────────────────────────
 function tagBadges(tags) {
-  return tags.map(t => `<a href="/tags/${slugify(t)}.html" class="tag-badge">${escapeHtml(t)}</a>`).join(' ');
+  return tags.map(t => `<a href="${SITE.basePath}/tags/${slugify(t)}.html" class="tag-badge">${escapeHtml(t)}</a>`).join(' ');
 }
 
 // ─── Post Card HTML ──────────────────────────────────────────
@@ -116,7 +117,7 @@ function postCard(post) {
           <span class="post-card-reading">${post.readingTime} min read</span>
         </div>
         <h2 class="post-card-title">
-          <a href="/post/${post.slug}.html">${escapeHtml(post.title)}</a>
+          <a href="${SITE.basePath}/post/${post.slug}.html">${escapeHtml(post.title)}</a>
         </h2>
         <p class="post-card-excerpt">${escapeHtml(post.excerpt)}</p>
         <div class="post-card-footer">
@@ -187,12 +188,12 @@ function build() {
     const start = (page - 1) * SITE.postsPerPage;
     const pagePosts = posts.slice(start, start + SITE.postsPerPage);
     const cardsHtml = pagePosts.map(postCard).join('\n');
-    const pagination = paginationHtml(page, totalPages, '/index');
+    const pagination = paginationHtml(page, totalPages, `${SITE.basePath}/index`);
 
     // Collect all tags for sidebar
     const allTags = [...new Set(posts.flatMap(p => p.tags))].sort();
     const tagCloudHtml = allTags.map(t =>
-      `<a href="/tags/${slugify(t)}.html" class="tag-badge">${escapeHtml(t)}</a>`
+      `<a href="${SITE.basePath}/tags/${slugify(t)}.html" class="tag-badge">${escapeHtml(t)}</a>`
     ).join(' ');
 
     const pageContent = render(homeTemplate, {
@@ -207,7 +208,8 @@ function build() {
       description: SITE.description,
       content: pageContent,
       siteTitle: SITE.title,
-      canonical: page === 1 ? '/' : `/index-${page}.html`,
+      canonical: page === 1 ? `${SITE.basePath}/` : `${SITE.basePath}/index-${page}.html`,
+      basePath: SITE.basePath,
       ogType: 'website',
       ogImage: '',
     });
@@ -223,7 +225,7 @@ function build() {
     const start = (page - 1) * SITE.postsPerPage;
     const pagePosts = posts.slice(start, start + SITE.postsPerPage);
     const cardsHtml = pagePosts.map(postCard).join('\n');
-    const pagination = paginationHtml(page, totalPages, '/blog/index');
+    const pagination = paginationHtml(page, totalPages, `${SITE.basePath}/blog/index`);
 
     const pageContent = render(blogTemplate, {
       posts: cardsHtml,
@@ -235,7 +237,8 @@ function build() {
       description: 'Browse all blog posts',
       content: pageContent,
       siteTitle: SITE.title,
-      canonical: `/blog/${page === 1 ? 'index' : `index-${page}`}.html`,
+      canonical: `${SITE.basePath}/blog/${page === 1 ? 'index' : `index-${page}`}.html`,
+      basePath: SITE.basePath,
       ogType: 'website',
       ogImage: '',
     });
@@ -254,12 +257,12 @@ function build() {
 
     let navHtml = '<nav class="post-nav">';
     if (prev) {
-      navHtml += `<a href="/post/${prev.slug}.html" class="post-nav-link post-nav-prev"><span class="post-nav-label">&larr; Previous</span><span class="post-nav-title">${escapeHtml(prev.title)}</span></a>`;
+      navHtml += `<a href="${SITE.basePath}/post/${prev.slug}.html" class="post-nav-link post-nav-prev"><span class="post-nav-label">&larr; Previous</span><span class="post-nav-title">${escapeHtml(prev.title)}</span></a>`;
     } else {
       navHtml += '<span class="post-nav-link"></span>';
     }
     if (next) {
-      navHtml += `<a href="/post/${next.slug}.html" class="post-nav-link post-nav-next"><span class="post-nav-label">Next &rarr;</span><span class="post-nav-title">${escapeHtml(next.title)}</span></a>`;
+      navHtml += `<a href="${SITE.basePath}/post/${next.slug}.html" class="post-nav-link post-nav-next"><span class="post-nav-label">Next &rarr;</span><span class="post-nav-title">${escapeHtml(next.title)}</span></a>`;
     } else {
       navHtml += '<span class="post-nav-link"></span>';
     }
@@ -281,7 +284,8 @@ function build() {
       description: post.excerpt,
       content: pageContent,
       siteTitle: SITE.title,
-      canonical: `/post/${post.slug}.html`,
+      canonical: `${SITE.basePath}/post/${post.slug}.html`,
+      basePath: SITE.basePath,
       ogType: 'article',
       ogImage: '',
     });
@@ -306,7 +310,7 @@ function build() {
   const allTagsHtml = Object.entries(tagMap)
     .sort((a, b) => a[1].name.localeCompare(b[1].name))
     .map(([key, { name, posts: tagPosts }]) =>
-      `<a href="/tags/${key}.html" class="tag-page-link"><span class="tag-name">${escapeHtml(name)}</span><span class="tag-count">${tagPosts.length}</span></a>`
+      `<a href="${SITE.basePath}/tags/${key}.html" class="tag-page-link"><span class="tag-name">${escapeHtml(name)}</span><span class="tag-count">${tagPosts.length}</span></a>`
     ).join('\n');
 
   const tagsIndexContent = `
@@ -320,7 +324,8 @@ function build() {
     description: 'Browse posts by tag',
     content: tagsIndexContent,
     siteTitle: SITE.title,
-    canonical: '/tags/index.html',
+    canonical: `${SITE.basePath}/tags/index.html`,
+    basePath: SITE.basePath,
     ogType: 'website',
     ogImage: '',
   });
@@ -338,7 +343,8 @@ function build() {
       description: `Browse posts tagged with ${name}`,
       content: pageContent,
       siteTitle: SITE.title,
-      canonical: `/tags/${key}.html`,
+      canonical: `${SITE.basePath}/tags/${key}.html`,
+      basePath: SITE.basePath,
       ogType: 'website',
       ogImage: '',
     });
@@ -362,6 +368,7 @@ function build() {
       title: post.title,
       id: `${SITE.url}/post/${post.slug}.html`,
       link: `${SITE.url}/post/${post.slug}.html`,
+
       description: post.excerpt,
       content: post.htmlContent,
       author: [{ name: post.author }],
@@ -374,15 +381,15 @@ function build() {
 
   // ─── Generate Sitemap ──────────────────────────────────────
   const sitemapUrls = [
-    { loc: '/', priority: '1.0' },
-    { loc: '/blog/index.html', priority: '0.9' },
-    { loc: '/tags/index.html', priority: '0.7' },
+    { loc: `${SITE.basePath}/`, priority: '1.0' },
+    { loc: `${SITE.basePath}/blog/index.html`, priority: '0.9' },
+    { loc: `${SITE.basePath}/tags/index.html`, priority: '0.7' },
   ];
   for (const post of posts) {
-    sitemapUrls.push({ loc: `/post/${post.slug}.html`, priority: '0.8', lastmod: post.date });
+    sitemapUrls.push({ loc: `${SITE.basePath}/post/${post.slug}.html`, priority: '0.8', lastmod: post.date });
   }
   for (const key of Object.keys(tagMap)) {
-    sitemapUrls.push({ loc: `/tags/${key}.html`, priority: '0.6' });
+    sitemapUrls.push({ loc: `${SITE.basePath}/tags/${key}.html`, priority: '0.6' });
   }
 
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>

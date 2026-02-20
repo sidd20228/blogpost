@@ -2,10 +2,13 @@
 (function () {
     let postsData = null;
 
+    // Detect basePath from the page
+    const basePath = document.querySelector('link[rel="stylesheet"][href*="/css/style.css"]')?.href.replace(/\/css\/style\.css$/, '').replace(window.location.origin, '') || '';
+
     async function loadPosts() {
         if (postsData) return postsData;
         try {
-            const res = await fetch('/posts.json');
+            const res = await fetch(`${basePath}/posts.json`);
             postsData = await res.json();
             return postsData;
         } catch (e) {
@@ -29,7 +32,7 @@
 
         const html = results.map(post => `
       <div class="search-result-item">
-        <a href="/post/${post.slug}.html">${escapeHtml(post.title)}</a>
+        <a href="${basePath}/post/${post.slug}.html">${escapeHtml(post.title)}</a>
         <div class="search-result-date">${post.date} · ${post.readingTime} min read</div>
       </div>
     `).join('');
