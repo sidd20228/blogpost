@@ -1,20 +1,81 @@
-// ─── Authentication Module ────────────────────────────────────
+// ─── Authentication Module (GitHub OAuth) ─────────────────────
 const Auth = {
-    async login(token) {
+
+    // ─── Start OAuth Flow ─────────────────────────────────────
+    startOAuthFlow() {
+        // Generate random state for CSRF protection
+        const state = crypto.randomUUID();
+        sessionStorage.setItem('oauth_state', state);
+
+        const params = new URLSearchParams({
+            client_id: CONFIG.clientId,
+            redirect_uri: window.location.origin + '/admin/callback.html',
+            scope: CONFIG.oauthScopes,
+            state: state,
+        });
+
+        window.location.href = `https://github.com/login/oauth/authorize?${params}`;
+    },
+
+    // ─── Handle OAuth Callback ────────────────────────────────
+    async handleCallback(code, state) {
+        // Verify CSRF state
+        const savedState = sessionStorage.getItem('oauth_state');
+        sessionStorage.removeItem('oauth_state');
+
+        if (!savedState || savedState !== state) {
+            return { success: false, error: 'Invalid state parameter. Possible CSRF attack.' };
+        }
+
         try {
-            const res = await fetch('https://api.github.com/user', {
-                headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+            // Exchange code for token via Cloudflare Worker proxy
+            const res = await fetch(CONFIG.proxyUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code }),
             });
 
             if (!res.ok) {
-                return { success: false, error: 'Invalid token. Please check and try again.' };
+                const err = await res.json().catch(() => ({}));
+                return { success: false, error: err.error || 'Token exchange failed.' };
+            }
+
+            const data = await res.json();
+            if (!data.access_token) {
+                return { success: false, error: data.error_description || 'No access token received.' };
+            }
+
+            // Validate user with the received token
+            return await this.validateAndStore(data.access_token);
+        } catch (e) {
+            return { success: false, error: 'Network error during authentication.' };
+        }
+    },
+
+    // ─── PAT Login (fallback) ──────────────────────────────────
+    async login(token) {
+        return await this.validateAndStore(token);
+    },
+
+    // ─── Validate token and store session ─────────────────────
+    async validateAndStore(token) {
+        try {
+            const res = await fetch('https://api.github.com/user', {
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                },
+            });
+
+            if (!res.ok) {
+                return { success: false, error: 'Invalid token. Authentication failed.' };
             }
 
             const user = await res.json();
 
             // Check if user is in the allowed list
             if (!CONFIG.allowedUsers.includes(user.login)) {
-                return { success: false, error: `User "${user.login}" is not authorized to access the admin panel.` };
+                return { success: false, error: `User "${user.login}" is not authorized.` };
             }
 
             // Store session
@@ -68,9 +129,9 @@ const Auth = {
         const el = document.getElementById('user-info');
         if (el) {
             el.innerHTML = `
-        <img src="${user.avatar}" alt="${user.name}" class="w-8 h-8 rounded-full border-2 border-panel-700">
-        <span class="text-sm font-medium text-panel-200">${user.name}</span>
-      `;
+                <img src="${user.avatar}" alt="${user.name}" style="width:32px;height:32px;border-radius:50%;border:2px solid #262626;">
+                <span style="font-size:0.875rem;font-weight:500;">${user.name}</span>
+            `;
         }
 
         const logoutBtn = document.getElementById('logout-btn');

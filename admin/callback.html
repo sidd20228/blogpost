@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authenticating... | The Blog</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .callback-container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border: 3px solid #262626;
+            border-top-color: #00f5ff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .status {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #999;
+        }
+
+        .error {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 0, 128, 0.1);
+            border: 1px solid rgba(255, 0, 128, 0.3);
+            color: #ff0080;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .error a {
+            color: #00f5ff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="callback-container">
+        <div class="spinner" id="spinner"></div>
+        <p class="status" id="status">Completing authentication...</p>
+        <div class="error" id="error"></div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        (async () => {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            const state = params.get('state');
+            const error = params.get('error');
+
+            const statusEl = document.getElementById('status');
+            const errorEl = document.getElementById('error');
+            const spinnerEl = document.getElementById('spinner');
+
+            if (error) {
+                spinnerEl.style.display = 'none';
+                statusEl.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorEl.innerHTML = `GitHub authorization failed: ${error}. <a href="index.html">Try again</a>`;
+                return;
+            }
+
+            if (!code || !state) {
+                spinnerEl.style.display = 'none';
+                statusEl.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorEl.innerHTML = 'Missing authorization code. <a href="index.html">Try again</a>';
+                return;
+            }
+
+            statusEl.textContent = 'Exchanging code for token...';
+
+            const result = await Auth.handleCallback(code, state);
+
+            if (result.success) {
+                statusEl.textContent = 'Success! Redirecting...';
+                window.location.href = 'dashboard.html';
+            } else {
+                spinnerEl.style.display = 'none';
+                statusEl.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorEl.innerHTML = `${result.error} <a href="index.html">Try again</a>`;
+            }
+        })();
+    </script>
+</body>
+
+</html>
