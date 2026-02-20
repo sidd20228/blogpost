@@ -1,0 +1,104 @@
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <!-- Label -->
+        <div class="hero-label">
+            <div class="hero-label-dot"></div>
+            <span>CI/CD Powered Blog</span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="hero-title">
+            <span>Read The</span><br>
+            <span class="gradient-text text-glow">Latest</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="hero-subtitle">
+            Sharp insights. Cutting-edge tutorials. Premium content on technology,
+            development, and the future of software — powered entirely by GitHub.
+        </p>
+
+        <!-- CTA -->
+        <div class="hero-cta">
+            <a href="/blog/index.html" class="btn-accent">Browse All Posts →</a>
+            <a href="/rss.xml" class="btn-cyber">Subscribe via RSS</a>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value text-glow">{{ totalPosts }}</div>
+                <div class="stat-label">Published Posts</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value text-glow">0ms</div>
+                <div class="stat-label">Backend Server</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value text-glow">100%</div>
+                <div class="stat-label">Static</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Content Grid -->
+<div class="section">
+    <div style="display: flex; gap: 3rem; flex-wrap: wrap;">
+        <!-- Posts -->
+        <div style="flex: 1; min-width: 0;">
+            <div class="section-header">
+                <div class="section-label">Latest Posts</div>
+                <h2 class="section-title">Recent <span class="accent">Articles</span></h2>
+            </div>
+            <div style="display: grid; gap: 1.5rem;">
+                {{ posts }}
+            </div>
+            {{ pagination }}
+        </div>
+
+        <!-- Sidebar -->
+        <aside style="width: 300px; flex-shrink: 0;">
+            <div style="position: sticky; top: 5rem; display: grid; gap: 1.5rem;">
+                <!-- About -->
+                <div class="sidebar-card corner-brackets">
+                    <div class="sidebar-card-title">About</div>
+                    <p class="sidebar-about">
+                        A place for sharing knowledge about tech, development, and open source. Powered entirely by
+                        GitHub — no backend, no database, just pure static content.
+                    </p>
+                </div>
+
+                <!-- Stats -->
+                <div class="sidebar-card">
+                    <div class="sidebar-card-title">Stats</div>
+                    <div class="sidebar-stat-value text-glow">{{ totalPosts }}</div>
+                    <div class="sidebar-stat-label">Published Posts</div>
+                </div>
+
+                <!-- Tags -->
+                <div class="sidebar-card">
+                    <div class="sidebar-card-title">Tags</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
+                        {{ tagCloud }}
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="sidebar-card">
+                    <div class="sidebar-card-title">Search</div>
+                    <div class="search-wrap">
+                        <input type="text" id="search-input" placeholder="Search posts..." class="search-input">
+                        <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    <div id="search-results" class="hidden" style="margin-top: 0.75rem;"></div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+<script src="/js/search.js"></script>

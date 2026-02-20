@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor | Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body class="bg-[#020617] font-[Inter,system-ui,sans-serif] text-slate-300">
+
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="admin-sidebar-brand">
+            <div class="admin-sidebar-brand-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+            </div>
+            <div>
+                <h2>The Blog</h2><span>Admin Panel</span>
+            </div>
+        </div>
+        <nav class="admin-nav">
+            <div class="admin-nav-section">
+                <div class="admin-nav-section-title">Main</div>
+                <a href="dashboard.html" class="admin-nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="posts.html" class="admin-nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                    </svg>
+                    Posts
+                </a>
+                <a href="editor.html" class="admin-nav-item active">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    New Post
+                </a>
+            </div>
+            <div class="admin-nav-section">
+                <div class="admin-nav-section-title">System</div>
+                <a href="settings.html" class="admin-nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Settings
+                </a>
+            </div>
+        </nav>
+        <div class="p-4 border-t border-slate-800">
+            <a href="/" target="_blank" class="admin-nav-item">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                View Blog
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="admin-main">
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <h1 class="admin-header-title" id="page-title">New Post</h1>
+            </div>
+            <div class="admin-header-right">
+                <span id="reading-time" class="text-sm text-slate-500"></span>
+                <span id="word-count" class="text-sm text-slate-500"></span>
+                <div id="user-info" class="flex items-center gap-2"></div>
+                <button id="logout-btn" class="btn btn-ghost btn-sm">Logout</button>
+            </div>
+        </header>
+
+        <div class="p-6 space-y-6">
+            <!-- Post Metadata -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                    <label class="form-label">Title</label>
+                    <input type="text" id="post-title" class="form-input" placeholder="Enter post title...">
+                </div>
+                <div>
+                    <label class="form-label">Slug</label>
+                    <input type="text" id="post-slug" class="form-input" placeholder="auto-generated-slug">
+                </div>
+                <div>
+                    <label class="form-label">Publish Date</label>
+                    <input type="date" id="post-date" class="form-input">
+                </div>
+                <div>
+                    <label class="form-label">Status</label>
+                    <select id="post-status" class="form-input">
+                        <option value="published">Published</option>
+                        <option value="draft">Draft</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tags -->
+            <div>
+                <label class="form-label">Tags</label>
+                <div class="tag-input-container" id="tag-container"
+                    onclick="document.getElementById('tag-input').focus()">
+                    <input type="text" id="tag-input" class="tag-input-field"
+                        placeholder="Type a tag and press Enter...">
+                </div>
+            </div>
+
+            <!-- Image Upload -->
+            <div>
+                <label class="form-label">Upload Image</label>
+                <div class="flex items-center gap-3">
+                    <input type="file" id="image-upload" accept="image/*" class="hidden">
+                    <button onclick="document.getElementById('image-upload').click()" class="btn btn-ghost">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Upload Image
+                    </button>
+                    <span id="upload-status" class="text-sm text-slate-500"></span>
+                </div>
+            </div>
+
+            <!-- Editor Toolbar -->
+            <div class="editor-toolbar rounded-t-xl">
+                <button title="Bold" onclick="insertMarkdown('**', '**')"><svg class="w-4 h-4" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z" />
+                    </svg></button>
+                <button title="Italic" onclick="insertMarkdown('*', '*')"><svg class="w-4 h-4" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z" />
+                    </svg></button>
+                <span class="divider"></span>
+                <button title="Heading 2" onclick="insertLineStart('## ')"><svg class="w-4 h-4" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path d="M5 4v3h5.5v12h3V7H19V4z" />
+                    </svg></button>
+                <button title="Heading 3" onclick="insertLineStart('### ')"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path d="M5 4v3h5.5v12h3V7H19V4z" />
+                    </svg></button>
+                <span class="divider"></span>
+                <button title="Link" onclick="insertMarkdown('[', '](url)')"><svg class="w-4 h-4" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    </svg></button>
+                <button title="Image" onclick="insertMarkdown('![alt](', ')')"><svg class="w-4 h-4" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg></button>
+                <button title="Code" onclick="insertMarkdown('`', '`')"><svg class="w-4 h-4" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    </svg></button>
+                <button title="Code Block" onclick="insertMarkdown('\n```\n', '\n```\n')"><svg class="w-4 h-4"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg></button>
+                <span class="divider"></span>
+                <button title="Blockquote" onclick="insertLineStart('> ')"><svg class="w-4 h-4" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z" />
+                    </svg></button>
+                <button title="Unordered List" onclick="insertLineStart('- ')"><svg class="w-4 h-4" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg></button>
+                <button title="Ordered List" onclick="insertLineStart('1. ')"><svg class="w-4 h-4" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                    </svg></button>
+            </div>
+
+            <!-- Editor Split View -->
+            <div class="editor-container" style="border-top:none; border-top-left-radius:0; border-top-right-radius:0;">
+                <div class="editor-pane">
+                    <div class="editor-pane-header">Markdown</div>
+                    <textarea id="editor" class="editor-textarea"
+                        placeholder="Write your post content here in Markdown..."></textarea>
+                </div>
+                <div class="editor-pane">
+                    <div class="editor-pane-header">Preview</div>
+                    <div id="preview" class="editor-preview">
+                        <p class="text-slate-500 italic">Preview will appear here as you type...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-between">
+                <a href="posts.html" class="btn btn-ghost">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Back to Posts
+                </a>
+                <div class="flex items-center gap-3">
+                    <button id="save-draft-btn" onclick="publish('draft')" class="btn btn-ghost">Save as Draft</button>
+                    <button id="publish-btn" onclick="publish()" class="btn btn-primary">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                        </svg>
+                        Publish
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/editor.js"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebar-overlay').classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>

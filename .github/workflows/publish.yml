@@ -1,0 +1,110 @@
+name: Publish Post
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Post title'
+        required: true
+        type: string
+      slug:
+        description: 'URL slug'
+        required: true
+        type: string
+      content:
+        description: 'Markdown content'
+        required: true
+        type: string
+      tags:
+        description: 'JSON array of tags'
+        required: false
+        default: '[]'
+        type: string
+      status:
+        description: 'Post status (published or draft)'
+        required: true
+        default: 'published'
+        type: string
+      publish_date:
+        description: 'Publish date (YYYY-MM-DD)'
+        required: true
+        type: string
+      author:
+        description: 'Author name'
+        required: false
+        default: 'Admin'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create post file
+        run: |
+          # Determine file path based on status
+          if [ "${{ github.event.inputs.status }}" = "draft" ]; then
+            DIR="posts/drafts"
+          else
+            DIR="posts"
+          fi
+
+          mkdir -p "$DIR"
+
+          FILENAME="${{ github.event.inputs.publish_date }}-${{ github.event.inputs.slug }}.md"
+          FILEPATH="${DIR}/${FILENAME}"
+
+          # Check if this is a scheduled post (future date)
+          PUBLISH_DATE="${{ github.event.inputs.publish_date }}"
+          TODAY=$(date +%Y-%m-%d)
+
+          if [[ "$PUBLISH_DATE" > "$TODAY" && "${{ github.event.inputs.status }}" == "published" ]]; then
+            # Future date — save as draft with scheduled status
+            DIR="posts/drafts"
+            mkdir -p "$DIR"
+            FILEPATH="${DIR}/${FILENAME}"
+            STATUS="scheduled"
+          else
+            STATUS="${{ github.event.inputs.status }}"
+          fi
+
+          # Parse tags
+          TAGS='${{ github.event.inputs.tags }}'
+
+          # Create the markdown file with frontmatter
+          cat > "$FILEPATH" << 'ENDOFFILE'
+          ---
+          title: "${{ github.event.inputs.title }}"
+          slug: "${{ github.event.inputs.slug }}"
+          author: "${{ github.event.inputs.author }}"
+          date: "${{ github.event.inputs.publish_date }}"
+          tags: ${{ github.event.inputs.tags }}
+          status: "${STATUS}"
+          ---
+
+          ENDOFFILE
+
+          # Fix indentation in the file
+          sed -i 's/^          //' "$FILEPATH"
+
+          # Append content
+          echo '${{ github.event.inputs.content }}' >> "$FILEPATH"
+
+          echo "Created file: $FILEPATH"
+          cat "$FILEPATH"
+
+      - name: Commit and push
+        run: |
+          git config user.name "Blog Bot"
+          git config user.email "bot@blog.github.io"
+          git add posts/
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "📝 ${{ github.event.inputs.status }}: ${{ github.event.inputs.title }}"
+          git push

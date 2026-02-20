@@ -1,0 +1,86 @@
+name: Publish Scheduled Posts
+
+on:
+  schedule:
+    # Run every hour
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check-scheduled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check and publish scheduled posts
+        run: |
+          TODAY=$(date +%Y-%m-%d)
+          echo "Today's date: $TODAY"
+          CHANGES=false
+
+          # Check if drafts directory exists
+          if [ ! -d "posts/drafts" ]; then
+            echo "No drafts directory found."
+            exit 0
+          fi
+
+          # Loop through draft files
+          for file in posts/drafts/*.md; do
+            [ -f "$file" ] || continue
+
+            echo "Checking: $file"
+
+            # Extract date from filename (YYYY-MM-DD-slug.md)
+            FILE_DATE=$(basename "$file" | grep -oP '^\d{4}-\d{2}-\d{2}')
+
+            if [ -z "$FILE_DATE" ]; then
+              echo "  Skipping: no date in filename"
+              continue
+            fi
+
+            # Check if the post has scheduled status
+            if grep -q 'status: "scheduled"' "$file" || grep -q "status: scheduled" "$file"; then
+              echo "  Status: scheduled, Date: $FILE_DATE"
+
+              # Compare dates
+              if [[ "$FILE_DATE" <= "$TODAY" ]]; then
+                echo "  ✅ Publishing: $file"
+
+                # Update status to published
+                sed -i 's/status: "scheduled"/status: "published"/' "$file"
+                sed -i 's/status: scheduled/status: "published"/' "$file"
+
+                # Move to posts directory
+                mv "$file" "posts/$(basename "$file")"
+                CHANGES=true
+              else
+                echo "  ⏳ Not yet: scheduled for $FILE_DATE"
+              fi
+            fi
+          done
+
+          if [ "$CHANGES" = true ]; then
+            echo "Changes detected, committing..."
+          else
+            echo "No scheduled posts ready for publishing."
+          fi
+
+      - name: Commit and push
+        run: |
+          git config user.name "Blog Bot"
+          git config user.email "bot@blog.github.io"
+          git add posts/
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "⏰ Auto-publish scheduled posts"
+          git push

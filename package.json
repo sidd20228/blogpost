@@ -1,0 +1,15 @@
+{
+  "name": "blog-page",
+  "version": "1.0.0",
+  "description": "Traditional Blog + Admin CMS powered by GitHub Pages and GitHub Actions",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js --watch"
+  },
+  "dependencies": {
+    "front-matter": "^4.0.2",
+    "marked": "^12.0.0",
+    "feed": "^4.2.2",
+    "chokidar": "^3.6.0"
+  }
+}

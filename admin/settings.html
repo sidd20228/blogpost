@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body class="bg-[#020617] font-[Inter,system-ui,sans-serif] text-slate-300">
+
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="admin-sidebar-brand">
+            <div class="admin-sidebar-brand-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+            </div>
+            <div>
+                <h2>The Blog</h2><span>Admin Panel</span>
+            </div>
+        </div>
+        <nav class="admin-nav">
+            <div class="admin-nav-section">
+                <div class="admin-nav-section-title">Main</div>
+                <a href="dashboard.html" class="admin-nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="posts.html" class="admin-nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                    </svg>
+                    Posts
+                </a>
+                <a href="editor.html" class="admin-nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    New Post
+                </a>
+            </div>
+            <div class="admin-nav-section">
+                <div class="admin-nav-section-title">System</div>
+                <a href="settings.html" class="admin-nav-item active">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Settings
+                </a>
+            </div>
+        </nav>
+        <div class="p-4 border-t border-slate-800">
+            <a href="/" target="_blank" class="admin-nav-item">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                View Blog
+            </a>
+        </div>
+    </aside>
+
+    <div class="admin-main">
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <h1 class="admin-header-title">Settings</h1>
+            </div>
+            <div class="admin-header-right">
+                <div id="user-info" class="flex items-center gap-2"></div>
+                <button id="logout-btn" class="btn btn-ghost btn-sm">Logout</button>
+            </div>
+        </header>
+
+        <div class="p-6 space-y-6 max-w-2xl">
+            <!-- Repository Info -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2 class="admin-card-title">Repository Configuration</h2>
+                </div>
+                <div class="admin-card-body space-y-4">
+                    <div>
+                        <label class="form-label">GitHub Username (Owner)</label>
+                        <input type="text" id="setting-owner" class="form-input" placeholder="your-github-username">
+                    </div>
+                    <div>
+                        <label class="form-label">Repository Name</label>
+                        <input type="text" id="setting-repo" class="form-input" placeholder="blog_page">
+                    </div>
+                    <div>
+                        <label class="form-label">Branch</label>
+                        <input type="text" id="setting-branch" class="form-input" placeholder="main">
+                    </div>
+                    <p class="text-xs text-slate-500">
+                        ⚠️ Settings are stored locally in your browser. To permanently change repo config, update <code
+                            class="bg-slate-800 px-1 py-0.5 rounded">admin/js/config.js</code>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Site Metadata -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2 class="admin-card-title">Site Metadata</h2>
+                </div>
+                <div class="admin-card-body space-y-4">
+                    <div>
+                        <label class="form-label">Site Title</label>
+                        <input type="text" id="setting-title" class="form-input" placeholder="The Blog">
+                    </div>
+                    <div>
+                        <label class="form-label">Site Description</label>
+                        <textarea id="setting-description" class="form-input" rows="3"
+                            placeholder="A modern blog powered by GitHub Pages"></textarea>
+                    </div>
+                    <div>
+                        <label class="form-label">Default Author</label>
+                        <input type="text" id="setting-author" class="form-input" placeholder="Admin">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Allowed Users -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2 class="admin-card-title">Authorized Admin Users</h2>
+                </div>
+                <div class="admin-card-body space-y-4">
+                    <div>
+                        <label class="form-label">GitHub Usernames (comma-separated)</label>
+                        <input type="text" id="setting-users" class="form-input" placeholder="username1, username2">
+                    </div>
+                    <p class="text-xs text-slate-500">
+                        Only these GitHub usernames will be able to log in to the admin panel.
+                    </p>
+                </div>
+            </div>
+
+            <!-- SEO Defaults -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2 class="admin-card-title">SEO Defaults</h2>
+                </div>
+                <div class="admin-card-body space-y-4">
+                    <div>
+                        <label class="form-label">Default OG Image URL</label>
+                        <input type="text" id="setting-og-image" class="form-input"
+                            placeholder="https://example.com/og-image.jpg">
+                    </div>
+                    <div>
+                        <label class="form-label">Twitter Handle</label>
+                        <input type="text" id="setting-twitter" class="form-input" placeholder="@yourtwitterhandle">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Save -->
+            <div class="flex justify-end">
+                <button onclick="saveSettings()" class="btn btn-primary">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Save Settings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!Auth.guard()) return;
+            Auth.renderUserInfo();
+            loadSettings();
+        });
+
+        function loadSettings() {
+            const saved = JSON.parse(localStorage.getItem('blog_settings') || '{}');
+            document.getElementById('setting-owner').value = saved.owner || CONFIG.owner;
+            document.getElementById('setting-repo').value = saved.repo || CONFIG.repo;
+            document.getElementById('setting-branch').value = saved.branch || CONFIG.branch;
+            document.getElementById('setting-title').value = saved.siteTitle || CONFIG.siteTitle;
+            document.getElementById('setting-description').value = saved.siteDescription || CONFIG.siteDescription;
+            document.getElementById('setting-author').value = saved.defaultAuthor || CONFIG.defaultAuthor;
+            document.getElementById('setting-users').value = saved.allowedUsers ? saved.allowedUsers.join(', ') : CONFIG.allowedUsers.join(', ');
+            document.getElementById('setting-og-image').value = saved.ogImage || '';
+            document.getElementById('setting-twitter').value = saved.twitter || '';
+        }
+
+        function saveSettings() {
+            const settings = {
+                owner: document.getElementById('setting-owner').value.trim(),
+                repo: document.getElementById('setting-repo').value.trim(),
+                branch: document.getElementById('setting-branch').value.trim(),
+                siteTitle: document.getElementById('setting-title').value.trim(),
+                siteDescription: document.getElementById('setting-description').value.trim(),
+                defaultAuthor: document.getElementById('setting-author').value.trim(),
+                allowedUsers: document.getElementById('setting-users').value.split(',').map(s => s.trim()).filter(Boolean),
+                ogImage: document.getElementById('setting-og-image').value.trim(),
+                twitter: document.getElementById('setting-twitter').value.trim(),
+            };
+
+            localStorage.setItem('blog_settings', JSON.stringify(settings));
+
+            // Apply to CONFIG
+            Object.assign(CONFIG, settings);
+
+            showToast('Settings saved!');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebar-overlay').classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>

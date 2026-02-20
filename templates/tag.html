@@ -1,0 +1,18 @@
+<!-- Tag Page -->
+<div class="section" style="padding-top: 6rem; max-width: 960px;">
+    <div style="margin-bottom: 2.5rem;">
+        <a href="/tags/index.html"
+            style="font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.1em;">&larr;
+            All Tags</a>
+        <h1 class="section-title" style="margin-top: 1rem;">
+            Posts tagged <span class="accent">"{{ tagName }}"</span>
+        </h1>
+        <p
+            style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--fg-subtle); margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.1em;">
+            {{ count }} post(s) found</p>
+    </div>
+
+    <div style="display: grid; gap: 1.5rem;">
+        {{ posts }}
+    </div>
+</div>
