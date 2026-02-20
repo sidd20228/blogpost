@@ -13,12 +13,15 @@ const CONFIG = {
     // 3. Set Homepage URL to your blog URL
     // 4. Set Authorization callback URL to: https://<your-site>/admin/callback.html
     // 5. Copy the Client ID here
-    clientId: 'Ov23liZk0Pvubg8Ri47Q',  // ← Paste your OAuth App Client ID here
+    clientId: 'Ov23liZk0Pvubg8Ri47Q',
 
     // ─── Cloudflare Worker Proxy ──────────────────────────────
     // Deploy the worker from cloudflare-worker/worker.js
     // Then paste the worker URL here
-    proxyUrl: 'https://blogpost-oauth.parasharsiddhant7.workers.dev', // ← e.g. https://blog-oauth-proxy.<your-subdomain>.workers.dev
+    proxyUrl: 'https://blogpost-oauth.parasharsiddhant7.workers.dev',
+
+    // Explicit callback URL (must match GitHub OAuth App settings exactly)
+    callbackUrl: 'https://sidd20228.github.io/blogpost/admin/callback.html',
 
     // OAuth scopes needed
     oauthScopes: 'repo workflow',

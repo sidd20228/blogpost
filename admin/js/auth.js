@@ -7,11 +7,9 @@ const Auth = {
         const state = crypto.randomUUID();
         sessionStorage.setItem('oauth_state', state);
 
-        // Build redirect_uri from current page location (handles subpath deployments)
-        const adminBase = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
         const params = new URLSearchParams({
             client_id: CONFIG.clientId,
-            redirect_uri: adminBase + 'callback.html',
+            redirect_uri: CONFIG.callbackUrl,
             scope: CONFIG.oauthScopes,
             state: state,
         });
