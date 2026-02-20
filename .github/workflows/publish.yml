@@ -41,6 +41,14 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      INPUT_TITLE: ${{ github.event.inputs.title }}
+      INPUT_SLUG: ${{ github.event.inputs.slug }}
+      INPUT_CONTENT: ${{ github.event.inputs.content }}
+      INPUT_TAGS: ${{ github.event.inputs.tags }}
+      INPUT_STATUS: ${{ github.event.inputs.status }}
+      INPUT_DATE: ${{ github.event.inputs.publish_date }}
+      INPUT_AUTHOR: ${{ github.event.inputs.author }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -49,55 +57,46 @@ jobs:
 
       - name: Create post file
         run: |
-          # Determine file path based on status
-          if [ "${{ github.event.inputs.status }}" = "draft" ]; then
+          # Determine output status and directory
+          STATUS="${INPUT_STATUS}"
+          DIR="posts"
+
+          # If status is draft, put in drafts folder
+          if [ "$STATUS" = "draft" ]; then
             DIR="posts/drafts"
-          else
-            DIR="posts"
+          fi
+
+          # If publish date is in the future and status is published, schedule it
+          TODAY=$(date +%Y-%m-%d)
+          if [[ "$INPUT_DATE" > "$TODAY" && "$STATUS" == "published" ]]; then
+            STATUS="scheduled"
+            DIR="posts/drafts"
           fi
 
           mkdir -p "$DIR"
 
-          FILENAME="${{ github.event.inputs.publish_date }}-${{ github.event.inputs.slug }}.md"
+          FILENAME="${INPUT_DATE}-${INPUT_SLUG}.md"
           FILEPATH="${DIR}/${FILENAME}"
 
-          # Check if this is a scheduled post (future date)
-          PUBLISH_DATE="${{ github.event.inputs.publish_date }}"
-          TODAY=$(date +%Y-%m-%d)
-
-          if [[ "$PUBLISH_DATE" > "$TODAY" && "${{ github.event.inputs.status }}" == "published" ]]; then
-            # Future date — save as draft with scheduled status
-            DIR="posts/drafts"
-            mkdir -p "$DIR"
-            FILEPATH="${DIR}/${FILENAME}"
-            STATUS="scheduled"
-          else
-            STATUS="${{ github.event.inputs.status }}"
-          fi
-
-          # Parse tags
-          TAGS='${{ github.event.inputs.tags }}'
-
-          # Create the markdown file with frontmatter
-          cat > "$FILEPATH" << 'ENDOFFILE'
-          ---
-          title: "${{ github.event.inputs.title }}"
-          slug: "${{ github.event.inputs.slug }}"
-          author: "${{ github.event.inputs.author }}"
-          date: "${{ github.event.inputs.publish_date }}"
-          tags: ${{ github.event.inputs.tags }}
-          status: "${STATUS}"
-          ---
-
-          ENDOFFILE
-
-          # Fix indentation in the file
-          sed -i 's/^          //' "$FILEPATH"
+          # Write frontmatter
+          {
+            echo "---"
+            echo "title: \"${INPUT_TITLE}\""
+            echo "slug: \"${INPUT_SLUG}\""
+            echo "author: \"${INPUT_AUTHOR}\""
+            echo "date: \"${INPUT_DATE}\""
+            echo "tags: ${INPUT_TAGS}"
+            echo "status: \"${STATUS}\""
+            echo "---"
+            echo ""
+          } > "$FILEPATH"
 
           # Append content
-          echo '${{ github.event.inputs.content }}' >> "$FILEPATH"
+          echo "${INPUT_CONTENT}" >> "$FILEPATH"
 
-          echo "Created file: $FILEPATH"
+          echo "✅ Created file: $FILEPATH"
+          echo "   Status: $STATUS"
+          echo "   Directory: $DIR"
           cat "$FILEPATH"
 
       - name: Commit and push
@@ -106,5 +105,5 @@ jobs:
           git config user.email "bot@blog.github.io"
           git add posts/
           git diff --cached --quiet && echo "No changes to commit" && exit 0
-          git commit -m "📝 ${{ github.event.inputs.status }}: ${{ github.event.inputs.title }}"
+          git commit -m "📝 ${INPUT_STATUS}: ${INPUT_TITLE}"
           git push
