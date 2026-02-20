@@ -7,7 +7,7 @@ tags: ["welcome", "introduction"]
 status: "published"
 ---
 
-Welcome to our brand new blog! We're thrilled to have you here. This is the very first post on our platform, and it marks the beginning of an exciting journey.
+Welcome to our brand new blog! We're thrilled to have you here. This is the very first post on our platform, and it marks the beginning of an exciting.
 
 ## What to Expect
 
